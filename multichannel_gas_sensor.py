@@ -14,16 +14,15 @@ The MIT License (MIT)
     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.1  USA
+    THE SOFTWARE.
 
-THIS LIBRARY IS PARTLY UNTESTED, if you find a bug report it with a PR.
 
 * `This Library is a cirucit python port of 
    Seeed Grove_Multichannel_Gas_Sensor V2.0 by Seeed-Studio
    <https://github.com/Seeed-Studio/Seeed_Arduino_MultiGas>`_
 
 
-* Author: Pascal S (theHolypumpkin)
+* Author: Pascal S (theholypumpkin)
 
 **Hardware:**
 
