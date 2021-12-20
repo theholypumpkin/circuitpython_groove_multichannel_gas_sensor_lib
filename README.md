@@ -7,7 +7,7 @@ But I added some wrapper methods which passible make it easyer to use.
 ## Hardware requirements:
 [Seeedstrudio Grove - Multichannel Gas Sensor v2](https://www.seeedstudio.com/Grove-Multichannel-Gas-Sensor-v2-p-4569.html)
 
-##Software requirements and dependencies:
+## Software requirements and dependencies:
 - [Adafruit CircuitPython firmware for the supported boards](https://github.com/adafruit/circuitpython/releases)
 - [Adafruit's Bus Device library](https://github.com/adafruit/Adafruit_CircuitPython_BusDevice)
 - [Adafruit's Register library](https://github.com/adafruit/Adafruit_CircuitPython_Register)
