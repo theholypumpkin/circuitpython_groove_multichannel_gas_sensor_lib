@@ -11,6 +11,7 @@ But I added some wrapper methods which passible make it easyer to use.
 - [Adafruit CircuitPython firmware for the supported boards](https://github.com/adafruit/circuitpython/releases)
 - [Adafruit's Bus Device library](https://github.com/adafruit/Adafruit_CircuitPython_BusDevice)
 - [Adafruit's Register library](https://github.com/adafruit/Adafruit_CircuitPython_Register)
+  
   The libraries and firmware can also be downloaded on [CircuitPython.org](https://circuitpython.org)
   
 ### Getting started:
