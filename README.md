@@ -4,7 +4,7 @@ It just a circuit-python Port of the official [Arduino Library privided by Seeed
 You can still overwelmingly follow the [Arduino Tutorial provided by Seeedstudio](https://wiki.seeedstudio.com/Grove-Multichannel-Gas-Sensor-V2/) without any complications as long as you have the necessary dependencies installed.
 But I added some wrapper methods which passible make it easyer to use.
 
-##Hardware requirements:
+## Hardware requirements:
 [Seeedstrudio Grove - Multichannel Gas Sensor v2](https://www.seeedstudio.com/Grove-Multichannel-Gas-Sensor-v2-p-4569.html)
 
 ##Software requirements and dependencies:
@@ -13,7 +13,7 @@ But I added some wrapper methods which passible make it easyer to use.
 - [Adafruit's Register library](https://github.com/adafruit/Adafruit_CircuitPython_Register)
   The libraries and firmware can also be downloaded on [CircuitPython.org](https://circuitpython.org)
   
-###Getting started:
+### Getting started:
 Drag the dependencies and this library into the lib folder on your circuit-python device.
 __Please note that the .mpy files is only compiled for version Circuit-Python 6.3.0. If you use a version above you can use the uncompressed .py file or compress the files yourself using mpycross__
 
@@ -66,7 +66,7 @@ no2_vol = calcVol(adc) # returns the Voltage of the Sensor
 ```
 The choice is yours. 
 
-###Advanced features:
+### Advanced features:
 If you want to change the physical i2c address of the sensor you can do this is software
 to do so, call
 ```python
