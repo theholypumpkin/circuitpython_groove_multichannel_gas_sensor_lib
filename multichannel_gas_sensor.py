@@ -64,8 +64,8 @@ from adafruit_bus_device.i2c_device import I2CDevice
 from adafruit_register import i2c_bit
 from adafruit_register import i2c_bits
 
-__version__ = "1.0.1"
-__repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_CCS811.git" #TODO Change repo
+__version__ = "1.0.0"
+__repo__ = "https://github.com/theholypumpkin/Circuitpython-Groove-Multichannel-Gas-Sensor-lib.git"
 
 _GM_N02_VALUE = const(0x01)         # Nitrogend Dioxide Sensor
 # Alcohole, Acetone, Methybenzene Formeldahyde Sensor
@@ -134,7 +134,8 @@ class GM_Multi_Gas:
     def _GMWriteByte(self, registerAddr: const):
         """Writing a byte to a defined register"""
         with self.i2c_device as i2c:
-            i2c.write(bytes([registerAddr]), end=1) # converts the constant int into a bytearray to be bufferable
+            # converts the constant int into a bytearray to be bufferable
+            i2c.write(bytes([registerAddr]), end=1)
         time.sleep(0.1)
 
     # This messege read 4 bytes at a given adress
@@ -143,9 +144,11 @@ class GM_Multi_Gas:
         buf = bytearray(4)
         with self.i2c_device as i2c:
             # Reads 4 bytes from a defined Register Address
-            i2c.write_then_readinto(bytes([registerAddr]), buf) # converts the constant int into a bytearray to be bufferable
+            # converts the constant int into a bytearray to be bufferable
+            i2c.write_then_readinto(bytes([registerAddr]), buf)
         time.sleep(0.1)
-        return struct.unpack('<i', buf) # unpacks the bytearray into an integer
+        # unpacks the bytearray into an integer
+        return struct.unpack('<i', buf)
 
     def preheated(self):
         """Warms up the sensors"""
