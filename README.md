@@ -34,32 +34,32 @@ Once this is done you can define your `board.I2C` object and define your sensor 
 
 ```python
   i2c = board.I2C()   # uses board.SCL and board.SDA
-  gas = multichannel_gas_sensor.GM_Multi_Gas(i2c)
+  gas = multichannel_gas_sensor.MultichannelGas(i2c)
 ```
 
 Now you can preheat the sensor
 Note that this is also done automatically as soon as you call any `measure` functions the first time.
 
 ```python
-  gas.preheated()
+  gas.preheat()
 ```
 
 Now you have access to the `no2`, `c2h5oh`, `voc` and `co` attributes.
 
 ```python
-  no2 = gas.measureNO2() # Measures Nitrogen Dioxide and other trace gasses
-  co = gas.measureCO() # Measures Carbon Monoxide and other trace gasses
-  c2h5oh = gas.measureC2H5OH() # Measures Ethyl alcohol and other trace gasses
-  voc = gas.measureVOC() # Measures Volatile organic compounds
+  no2 = gas.measure_NO2() # Measures Nitrogen Dioxide and other trace gasses
+  co = gas.measure_CO() # Measures Carbon Monoxide and other trace gasses
+  c2h5oh = gas.measure_C2H5OH() # Measures Ethyl alcohol and other trace gasses
+  voc = gas.measure_VOC() # Measures Volatile organic compounds
 ```
 
 To get the Sensor ADC Voltage `no2_vol`, `c2h5oh_vol`, `voc_vol` and `co_vol` attributes.
 
 ```python
-    no2_vol = gas.measureNO2_Voltage()
-    co_vol = gas.measureCO_Voltage()
-    c2h5oh_vol = gas.measureC2H5OH_Voltage()
-    voc_vol = gas.measureVOC_Voltage()
+    no2_vol = gas.measure_NO2_voltage()
+    co_vol = gas.measure_CO_voltage()
+    c2h5oh_vol = gas.measure_C2H5OH_voltage()
+    voc_vol = gas.measure_VOC_voltage()
 ```
 
 ### Advanced features
@@ -68,9 +68,7 @@ If you want to change the physical i2c address of the sensor you can do this is 
 to do so, call
 
 ```python
-gas.changeGMAddress(110) # sets the adress of the mutisensor to 0x6E
-# Don't  forget to also tell your board to use the new address
-gas.setAddress(i2c, 110) # changes the adress your board tries comunicate with the sensor.
+gas.i2c_ddress(0x6E) # sets the new address of the mutisensor to 0x6E
 ```
 
 Thats about it, if there are any troubles create an issue.
