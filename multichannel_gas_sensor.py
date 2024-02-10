@@ -83,7 +83,7 @@ __GM_RESOLUTION = const(1023)
 
 # =================================================================================================
 # classes
-class GM_Multi_Gas:
+class MultichannelGas:
     """
     Seeedstrudio Grove - Multichannel Gas Sensor v2 Driver
 
@@ -106,157 +106,163 @@ class GM_Multi_Gas:
         .. code-block:: python
 
             i2c = board.I2C()   # uses board.SCL and board.SDA
-            gas = multichannel_gas_sensor.GM_Multi_Gas(i2c)
+            gas = multichannel_gas_sensor.MultichannelGas(i2c)
 
         Now you have access to the :attr:`no2`, `c2h5oh`, `voc` and :attr:`co` attributes.
 
         .. code-block:: python
 
-            no2 = gas.measureNO2()
-            co = gas.measureCO()
-            c2h5oh = gas.measureC2H5OH()
-            voc = gas.measureVOC()
+            no2 = gas.measure_NO2
+            co = gas.measure_CO
+            c2h5oh = gas.measure_C2H5OH
+            voc = gas.measure_VOC
 
         To get the Sensor Voltage :attr:`no2_vol`, `c2h5oh_vol`, `voc_vol` and :attr:`co_vol` 
         attributes.
 
         .. code-block:: python
 
-            no2_vol = gas.measureNO2_Voltage()
-            co_vol = gas.measureCO_Voltage()
-            c2h5oh_vol = gas.measureC2H5OH_Voltage()
-            voc_vol = gas.measureVOC_Voltage()
+            no2_vol = gas.measure_NO2_voltage
+            co_vol = gas.measure_CO_voltage
+            c2h5oh_vol = gas.measure_C2H5OH_voltage
+            voc_vol = gas.measure_VOC_voltage
 
     """
     
 # =================================================================================================
-    __is_preheated = False
-
     def __init__(self, i2c_bus, address=0x08):
-        self.i2c_device = I2CDevice(i2c_bus, address)
+        self.__is_preheated = False
+        self.__i2c_address = address
+        self.__i2c_device = I2CDevice(i2c_bus, address)
 
     # =============================================================================================
     # properties    
     @property
-    def __getGM102B(self):
+    def __GM102B(self):
         """get the adc value of GM102B"""
         if not self.__is_preheated:
             self.preheat()
-        return self.__getData(__GM_N02_VALUE)
+        return self.__GM_write_and_read(__GM_N02_VALUE)
 
     # _____________________________________________________________________________________________
     @property
-    def __getGM302B(self):
+    def __GM302B(self):
         """get the adc value of GM302B"""
         if not self.__is_preheated:
             self.preheat()
-        return self.__getData(__GM_C2H5CH_VALUE)
+        return self.__GM_write_and_read(__GM_C2H5CH_VALUE)
 
     # _____________________________________________________________________________________________
     @property
-    def __getGM502B(self):
+    def __GM502B(self):
         """get the adc value of GM502B"""
         if not self.__is_preheated:
             self.preheat()
-        return self.__getData(__GM_VOC_VALUE)
+        return self.__GM_write_and_read(__GM_VOC_VALUE)
     
     # _____________________________________________________________________________________________
     @property
-    def __getGM702B(self):
+    def __GM702B(self):
         """get the adc value of GM702B"""
         if not self.__is_preheated:
             self.preheat()
-        return self.__getData(__GM_CO_VALUE)
+        return self.__GM_write_and_read(__GM_CO_VALUE)
 
     # _____________________________________________________________________________________________
     @property
-    def measureNO2_Voltage(self):
+    def measure_NO2_voltage(self):
         """The Voltage of the Nitrogendioxide Sensor as a decimal number in Volts"""
-        return self.calcVol(self.__getGM102B)
+        return self.calculate_voltage(self.__GM102B)
     
     # _____________________________________________________________________________________________
     @property
-    def measureC2H5OH_Voltage(self):
+    def measure_C2H5OH_voltage(self):
         """
         The Voltage of the Alcohole, Acetone, Methybenzene and Formeldahyde as a decimal number 
         in Volts
         """
-        return self.calcVol(self.__getGM302B)
+        return self.calculate_voltage(self.__GM302B)
 
     # _____________________________________________________________________________________________
     @property
-    def measureVOC_Voltage(self):
+    def measure_vOC_Voltage(self):
         """The Voltage of the Volatile Organic Compound Sensor as a decimal number in Volts"""
-        return self.calcVol(self.__getGM502B)
+        return self.calculate_voltage(self.__GM502B)
 
     # _____________________________________________________________________________________________
     @property
-    def measureCO_Voltage(self):
+    def measure_CO_voltage(self):
         """The Voltage of the Carbonmonoxide Sensor as a decimal number in Volts"""
-        return self.calcVol(self.__getGM702B)
+        return self.calculate_voltage(self.__GM702B)
 
     # _____________________________________________________________________________________________
     @property
-    def measureNO2(self):
+    def measure_NO2(self):
         """Total Atmospheric Nitrogendioxide level in parts per billion"""
-        return self.__getGM102B[0]
+        return self.__GM102B[0]
 
     # _____________________________________________________________________________________________
     @property
-    def measureC2H5OH(self):
+    def measure_C2H5OH(self):
         """Total Alcohole, Acetone, Methybenzene and Formeldahyde level in parts per billion"""
-        return self.__getGM302B[0]
+        return self.__GM302B[0]
 
     # _____________________________________________________________________________________________
     @property
-    def measureVOC(self):
+    def measure_VOC(self):
         """Total Volatile Organic Compound in parts per billion."""
-        return self.__getGM502B[0]
+        return self.__GM502B[0]
 
     # _____________________________________________________________________________________________
     @property
-    def measureCO(self):
+    def measure_CO(self):
         """Total Atmospheric Carbonmonoxide level in parts per billion"""
-        return self.__getGM702B[0]
-    
-    # =============================================================================================
-    # methods
-    def calcVol(self, adc: float):
-        """Calculates the voltage based on the parts per billion value"""
-        return (adc[0] * 3.3)/__GM_RESOLUTION
+        return self.__GM702B[0]
     
     # _____________________________________________________________________________________________
-    def changeGMAddress(self, new_i2c_address: int):
+    @property
+    def i2c_address(self, new_i2c_address: int):
+        return self.__i2c_address
+        
+    # _____________________________________________________________________________________________
+    @i2c_address.setter
+    def i2c_address(self, new_i2c_address: int):
         """change the I2C address of gas sonsor"""
         if new_i2c_address == 0 or new_i2c_address > 127:
             raise ValueError(f'{new_i2c_address=} out of Range (0,128)')
-        
-        with self.i2c_device as i2c:
+        # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+        with self.__i2c_device as i2c:
             # Writes to the intended i2c adress to change the address to the new address
             buf = [__GM_CHANGE_I2C_ADDR, new_i2c_address]
             i2c.write(buf)
         time.sleep(0.1)
         
-    # _____________________________________________________________________________________________
-    # Updates the i2c device with a new address
-    def setAddress(self, i2c_bus, address: int):
-        """sets the sensor i2c adress in case it changed"""
-        self.i2c_device = I2CDevice(i2c_bus, address)
-        self.preheated()
+        # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+        # update i2c_device
+        
+        self.__i2c_address = new_i2c_address
+        self.__i2c_device = I2CDevice(i2c_bus, new_i2c_address)
+        self.preheat()
 
+    # =============================================================================================
+    # methods
+    def calculate_voltage(self, adc: float, system_voltage: float = 3.3):
+        """Calculates the voltage based on the parts per billion value"""
+        return (adc[0] * system_voltage)/__GM_RESOLUTION
+    
     # _____________________________________________________________________________________________
-    def __GMWriteByte(self, registerAddr: const):
+    def __GM_write(self, registerAddr: const):
         """Writing a byte to a defined register"""
-        with self.i2c_device as i2c:
+        with self.__i2c_device as i2c:
             # converts the constant int into a bytearray to be bufferable
             i2c.write(bytes([registerAddr]), end=1)
         time.sleep(0.1)
 
     # _____________________________________________________________________________________________
-    def __getData(self, registerAddr: const):
+    def __GM_write_and_read(self, registerAddr: const):
         """Getting the sensor data from a specific register"""
         buf = bytearray(4)
-        with self.i2c_device as i2c:
+        with self.__i2c_device as i2c:
             # Reads 4 bytes from a defined Register Address
             # converts the constant int into a bytearray to be bufferable
             i2c.write_then_readinto(bytes([registerAddr]), buf)
@@ -267,13 +273,13 @@ class GM_Multi_Gas:
     # _____________________________________________________________________________________________
     def preheat(self):
         """Warms up the sensors"""
-        self.__GMWriteByte(__GM_WARM_UP)
+        self.__GM_write(__GM_WARM_UP)
         self.__is_preheated = True
 
     # _____________________________________________________________________________________________
     def cool_down(self):
         """Cools down the sensors"""
-        self.__GMWriteByte(__GM_WARM_DOWN)
+        self.__GM_write(__GM_WARM_DOWN)
         self.__is_preheated = False
     
 # =================================================================================================
